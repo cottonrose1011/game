@@ -8,7 +8,6 @@ void reverse_number(long number);
 int main(void){
 	
 	long number = 12345698;
-	long number=12345698;
 	printf("입력 숫자 : %ld\n\n", number);
 	printf("높은 단위부터 출력\n");
 	serial_number(number);
