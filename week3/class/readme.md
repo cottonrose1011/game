@@ -23,7 +23,8 @@
 
 * 간단한 슬라이드 바 게임 ***slidebarGame.c***
 
-    <img width="458" alt="image" src="https://github.com/cottonrose1011/game/assets/101866860/68d7ebbd-2b77-4311-bc81-e3fdcdfff5dd">
+    <img width="253" alt="image" src="https://github.com/cottonrose1011/game/assets/101866860/280c1458-2068-451b-9632-9a9cf6a40371">
+
 
 * 간단한 테트리스 데모 버전 게임 ***tetrisDemo.c***
 
