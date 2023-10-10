@@ -20,13 +20,13 @@ long total_days(int year, int month, int day);
 void print_biorhythm(long total, int month);
 char bio_status(int val, int mod);
 void setTextcolor(int color_number);
-void getInfo(int byr, int bmon,int bday);
+void getInfo();
 void setInfo();
 
 int main(void)
 {
 
-		
+
 	int byr, bmon, bday;
 	int tyr, tmon, tday;
 	int choice = 0;
@@ -58,7 +58,7 @@ int main(void)
 		printf("                %s(%d/%d/%d/)님 안녕하세요       \n", info.name, byr, bmon, bday);
 		printf("┃                                                        ┃\n");
 		printf("       보시고 싶은 년도와 월을 입력하세요. (ex: 2004 11)  \n");
-		printf("┃         생년월일이 두번째 날짜보다 앞서야 합니다.      ┃\n");
+		printf("┃         생년월일이 입력한 날짜보다 앞서야 합니다.      ┃\n");
 		printf("┗--------------------------------------------------------┛\n");
 		scanf("%d%d", &tyr, &tmon);
 		tday=1;
@@ -130,7 +130,7 @@ void setTextcolor(int color_number)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color_number);
 }
-void getInfo(int byr, int bmon,int bday){
+void getInfo(){
 
 	FILE *file = fopen("user.txt", "r");
 	if (file == NULL) {
@@ -214,7 +214,6 @@ void setInfo(){
 	    char *value = strtok(NULL, ":");
 	    
 	    if (key != NULL && value != NULL) {
-	        // 공백을 제거하여 key와 value 추출
 	        char *trimmed_key = strtok(key, " \t\n");
 	        char *trimmed_value = strtok(value, " \t\n");
 	        
