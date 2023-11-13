@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style>
+</head>
+<body onload="startGame()">
+<script>
+
+var myGamePiece;
+var myObstacles = [];
+var myScore;
+var myLevel; // 난이도
+
+
+function startGame() {
+    myGamePiece = new component(30, 30, "red", 10, 120);
+    myScore = new component("30px", "Consolas", "black", 290, 40, "text");
+    myLevel = new component("30px", "Consolas", "black", 290, 80, "text"); // 난이도 표시 컴포넌트 초기화
+    myGameArea.start();
+}
+
+// 게임 재시작 버튼
+function restartGame() {
+        myGameArea.stop(); 
+        myObstacles = [];
+        myGameArea.frameNo = 0;
+        myGameArea.level = 1;
+        startGame();
+        }
+
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 480;
+        this.canvas.height = 270;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        this.level = 1; // 난이도 레벨 초기화
+    },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop : function() {
+        //최고 점수 보여주는 로직 추가
+        score = myGameArea.frameNo
+        if(score > window.localStorage.getItem("highScore")){
+            window.localStorage.setItem("highScore", score)
+        }
+        document.getElementById("highScore").innerText = "최고 점수: " + window.localStorage.getItem("highScore") +"점";
+        clearInterval(this.interval);
+    }
+}
+
+function component(width, height, color, x, y, type) {
+    this.type = type;
+    if (type == "image") {
+    this.image = new Image();
+    this.image.src = color;
+    }
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;    
+    this.x = x;
+    this.y = y;    
+    this.update = function() {
+        ctx = myGameArea.context;
+        if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+        }else if (type == "image") {
+            ctx.drawImage(this.image, 
+                this.x, 
+                this.y,
+                this.width, this.height);
+        }
+        else {
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;        
+    }
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
+}
+
+function updateGameArea() {
+    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+    for (i = 0; i < myObstacles.length; i += 1) {
+        if (myGamePiece.crashWith(myObstacles[i])) {
+            myGameArea.stop();
+            return;
+        } 
+    }
+    myGameArea.clear();
+    myGameArea.frameNo += 1;
+    if (myGameArea.frameNo == 1 || everyinterval(150 - (myGameArea.level * 20))) {
+        x = myGameArea.canvas.width;
+        minHeight = 20;
+        maxHeight = 200;
+        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+        minGap = 50;
+        maxGap = 200;
+        gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+        myObstacles.push(new component(10, height, "green", x, 0));
+        myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
+    }
+    for (i = 0; i < myObstacles.length; i += 1) {
+        myObstacles[i].speedX = -1;
+        myObstacles[i].newPos();
+        myObstacles[i].update();
+    }
+    myScore.text="SCORE: " + myGameArea.frameNo;
+    myScore.update();
+    // 점수에 따른 단계 상향
+    if (myGameArea.frameNo > 1000){myGameArea.level = 2;}
+    if (myGameArea.frameNo > 2000){myGameArea.level = 3;}
+    myLevel.text="LEVEL: " + myGameArea.level;
+    myLevel.update();
+    myGamePiece.newPos();    
+    myGamePiece.update();
+}
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function(){
+    this.sound.play();
+  }
+  this.stop = function(){
+    this.sound.pause();
+  }
+}
+
+function everyinterval(n) {
+    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+    return false;
+}
+
+
+function moveup() {
+    myGamePiece.speedY = -1.5; 
+}
+
+function movedown() {
+    myGamePiece.speedY = 1.5; 
+}
+
+function moveleft() {
+    myGamePiece.speedX = -2; 
+}
+
+function moveright() {
+    myGamePiece.speedX = 1.5;
+}
+
+function clearmove() {
+    myGamePiece.speedX = 0; 
+    myGamePiece.speedY = 0; 
+}
+
+// 키보드 입력 처리
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+    if (e.keyCode == '38') {
+        moveup();
+    } else if (e.keyCode == '40') {
+        movedown();
+    } else if (e.keyCode == '37') {
+        moveleft();
+    } else if (e.keyCode == '39') {
+        moveright();
+    }
+}
+
+function keyUpHandler(e) {
+    clearmove();
+}
+
+
+</script>
+
+<div><button onclick="restartGame()">Restart Game</button></div>
+<p>방향키를 움직여 게임을 플레이하세요.</p>
+<p id="highScore">최고 점수: 없음</p>
+<p>2019675055 정부용 업그레이드 과제</p>
+</body>
+</html>
