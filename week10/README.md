@@ -9,5 +9,5 @@
   * 재시작 기능 추가
   * 음악 추가
 
-> 발표
+> 발표 : 2023.11.15
 <img width="571" alt="image" src="https://github.com/cottonrose1011/game/assets/101866860/cdf06750-04d8-4780-955b-6e2bad1fe7bb">
