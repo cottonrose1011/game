@@ -9,13 +9,15 @@ canvas {
 }
 </style>
 </head>
-<body onload="startGame()">
+<body>
 <script>
 
 var myGamePiece;
 var myObstacles = [];
 var myScore;
 var myLevel; // 난이도
+var bgm = new Audio("./bgm.mp3"); //음악 추가
+
 
 
 function startGame() {
@@ -45,6 +47,9 @@ var myGameArea = {
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
         this.level = 1; // 난이도 레벨 초기화
+        document.getElementById("highScore").innerText = "최고 점수: " + window.localStorage.getItem("highScore") +"점";
+        document.getElementById("game-menu").style.display = 'none';
+        bgm.play();
     },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -56,6 +61,7 @@ var myGameArea = {
             window.localStorage.setItem("highScore", score)
         }
         document.getElementById("highScore").innerText = "최고 점수: " + window.localStorage.getItem("highScore") +"점";
+        document.getElementById("restart-game").style.display = 'block';
         clearInterval(this.interval);
     }
 }
@@ -211,10 +217,13 @@ function keyUpHandler(e) {
 
 
 </script>
-
-<div><button onclick="restartGame()">Restart Game</button></div>
+<section id="game-menu">
+    <h1>Rectangle Game</h1>
+    <button onclick = "startGame()">Play</button>
+</section>
+<div id="restart-game" style="display: none;"><button onclick="restartGame()">Restart Game</button></div>
 <p>방향키를 움직여 게임을 플레이하세요.</p>
-<p id="highScore">최고 점수: 없음</p>
+<p id="highScore"></p>
 <p>2019675055 정부용 업그레이드 과제</p>
 </body>
 </html>
