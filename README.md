@@ -14,3 +14,5 @@
   * Unity 게임 pdf 01, 02 실행
 ><a href="https://github.com/cottonrose1011/game/tree/main/week13"><strong> 13주차 </strong>
   * Unity 게임 pdf 03 실행
+><a href="https://github.com/cottonrose1011/game/tree/main/final/Project"><strong> 최종 발표 </strong>
+  * Unity 게임 업그레이드 발표
