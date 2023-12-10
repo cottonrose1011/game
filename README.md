@@ -4,6 +4,8 @@
   * C 파일 실행/업로드 후 출력 화면 readme 정리
 ><a href="https://github.com/cottonrose1011/game/tree/main/week4"> <strong> 4주차 </strong>
   * 발표 진행할 코드 선택
+><a href=""> <strong> 5주차 </strong>
+  * 예비군
 ><a href="https://github.com/cottonrose1011/game/tree/main/week5"> <strong> 6주차 </strong>
   * C 게임 업그레이드 발표
 ><a href="https://github.com/cottonrose1011/game/tree/main/week9"><strong> 10주차 </strong>
