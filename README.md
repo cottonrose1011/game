@@ -1,4 +1,4 @@
-# Game Programming
+# Game Programming (2023)
 
 ><a href="https://github.com/cottonrose1011/game/tree/main/week3"> <strong> 3주차 </strong>
   * C 파일 실행/업로드 후 출력 화면 readme 정리
